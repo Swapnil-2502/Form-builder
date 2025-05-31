@@ -8,7 +8,7 @@ export interface FormField {
     placeholder?: string,
     required?: boolean,
     options?: string[],
-    helpText: string,
+    helpText?: string,
     pattern?: string,
     minLength?: number;
     maxLength?: number;

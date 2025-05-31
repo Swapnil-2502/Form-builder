@@ -6,14 +6,13 @@ import {
   Scripts,
   ScrollRestoration
 } from "@remix-run/react";
-import styles from "./tailwind.css";
+
 import { Provider } from "react-redux";
 import { store } from "./store";
 
 export function links() {
-  return [{ rel: "stylesheet", href: styles }];
+  return [{ rel: "stylesheet", href: "../public/tailwind.css" }];
 }
-
 export default function root() {
   return (
     <html lang="en">
@@ -25,10 +24,9 @@ export default function root() {
         <Provider store={store}>
           <Outlet />
         </Provider>
-       
         <ScrollRestoration />
         <Scripts />
-        <LiveReload />
+        {/* {process.env.NODE_ENV === "development" && <LiveReload />} */}
       </body>
     </html>
   );
