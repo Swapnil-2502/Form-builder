@@ -1,6 +1,8 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { FormField } from "../../slices/formBuilderSlice";
+import { FormField, selectField } from "../../slices/formBuilderSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 
 
@@ -9,6 +11,9 @@ type Props = {
 }
 
 export default function SortableField({field}: Props){
+    const dispatch = useDispatch();
+    const selectedFieldId = useSelector((state: RootState) => state.formBuilder.selectedFieldId);
+
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: field.id,
     });
@@ -16,18 +21,36 @@ export default function SortableField({field}: Props){
     const style = {
         transform: CSS.Transform.toString(transform),
         transition,
+        
     };
+
+    const handleClick = () => {
+        dispatch(selectField(field.id))
+    }
+
+    //const isSelected = selectedFieldId === field.id;
 
   return (
      <div
       ref={setNodeRef}
       style={style}
-      {...attributes}
-      {...listeners}
-      className="p-4 border rounded mb-2 bg-white shadow cursor-move"
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+            handleClick();
+            }
+        }}
+        role="button"
+        tabIndex={0}
+      className={`p-4 border rounded mb-2 shadow cursor-pointer 
+      ${selectedFieldId === field.id ? "bg-blue-100 border-blue-500" : "bg-white"}`}
      >
-      <div className="font-medium">{field.label || "Untitled Field"}</div>
-      <small className="text-gray-500">{field.type}</small>
+        <div {...attributes} {...listeners} className="flex justify-between items-center">
+            <div className="font-medium">{field.label || "Untitled Field"}</div>
+        </div>
+        <div>
+            <small className="text-gray-500">{field.type}</small>
+        </div>
     </div>
   )
 }

@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import FormBuilder from "../components/FormBuilder/FormBuilder";
 import { addField } from "../slices/formBuilderSlice";
+import FieldSettingsPanel from "../components/Builder/FieldSettingsPanel";
 
 export default function BuilderRoute() {
 
@@ -30,8 +31,13 @@ export default function BuilderRoute() {
                 + Add Text Field
             </button>
 
-            {/* drag-and-drop list */}
-            <FormBuilder />
+            
+            <div className="flex flex-col sm:flex-row gap-4 p-4">
+            <div className="flex-1">
+                <FormBuilder />
+            </div>
+                <FieldSettingsPanel />
+            </div>
         </div>
     )
 }
