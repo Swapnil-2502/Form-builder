@@ -59,7 +59,7 @@ export default function FieldSettingsPanel(){
     }
 
     return (
-        <div className="p-4 border rounded shadow bg-white w-full sm:w-80">
+        <div className="max-h-[80vh] overflow-y-auto p-4 bg-gray-200 rounded">
             <h2 className="text-lg font-bold mb-4">Field Settings</h2>
 
             <label className="block mb-2">

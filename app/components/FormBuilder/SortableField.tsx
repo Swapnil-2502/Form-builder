@@ -41,8 +41,6 @@ export default function SortableField({field}: Props){
         );
     }
 
-    //const isSelected = selectedFieldId === field.id;
-
   return (
      <div
       ref={setNodeRef}

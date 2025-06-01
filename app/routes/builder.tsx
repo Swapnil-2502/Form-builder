@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import FormBuilder from "../components/FormBuilder/FormBuilder";
-import { addField, clearForm, togglePreviewMode } from "../slices/formBuilderSlice";
+import { addField, clearForm, togglePreviewMode, importFields } from "../slices/formBuilderSlice";
 import FieldSettingsPanel from "../components/Builder/FieldSettingsPanel";
 import { RootState } from "../store";
 import toast from "react-hot-toast";
@@ -40,42 +40,68 @@ export default function BuilderRoute() {
         URL.revokeObjectURL(url);
     }
 
+    const handleImportClick = () => {
+        const json = window.prompt("Paste form JSON here:");
+        if(!json) return 
+
+        try{
+            const parsed = JSON.parse(json);
+            if (!Array.isArray(parsed)) throw new Error("Invalid format");
+            
+            dispatch(importFields(parsed));
+            toast("Form imported successfully!", { icon: "✅" });
+        }
+        catch(error){
+            console.log(error)
+            toast("Invalid JSON. Please try again.", { icon: "❌" });
+        }
+    }
+
     return (
         <div className="min-h-screen bg-gray-50 p-6">
             <h1 className="text-2xl font-bold mb-4">Form Builder</h1>
 
-            {/* toolbar */}
-            <button
+            <div className="flex flex-wrap gap-2">
+                 <button
                 onClick={handleAddText}
-                className="mb-4 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-            >
-                + Add Text Field
-            </button>
-            <button
-                onClick={() =>{
-                    dispatch(clearForm())
-                    toast("All Fields Deleted", {
-                        icon: <span style={{ fontSize: "22px", fontWeight: "bold" }}>❌</span>,
-                    });
-                    } 
-                }
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-2"
+                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                 >
-                Clear All
-            </button>
-            <button
-                onClick={handleExport}
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 ml-2"
-                >
-                Export JSON
-            </button>
-
-            
-            <div className="flex flex-col sm:flex-row gap-4 p-4">
-            <div className="flex-1">
-                <FormBuilder />
+                    + Add Text Field
+                </button>
+                <button
+                    onClick={() =>{
+                        dispatch(clearForm())
+                        toast("All Fields Deleted", {
+                            icon: <span style={{ fontSize: "22px", fontWeight: "bold" }}>❌</span>,
+                        });
+                        } 
+                    }
+                    className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-2"
+                    >
+                    Clear All
+                </button>
+                <button
+                    onClick={handleExport}
+                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 ml-2"
+                    >
+                    Export JSON
+                </button>
+                <button
+                    className="ml-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                    onClick={handleImportClick}
+                    >
+                    Import JSON
+                </button>
             </div>
-                <FieldSettingsPanel />
+
+            <div className="flex flex-col md:flex-row gap-4 mt-2">
+                <div className="w-full md:w-2/3">
+                    <FormBuilder />
+                </div>
+                <div className="w-full md:w-1/3">
+                    <FieldSettingsPanel />
+                </div>
+                
             </div>
             <button
                 onClick={() => dispatch(togglePreviewMode())}

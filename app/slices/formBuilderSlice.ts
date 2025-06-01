@@ -58,6 +58,10 @@ const formBuilderSlice = createSlice({
         setPreviewMode(state, action: PayloadAction<boolean>) {
             state.isPreviewMode = action.payload;
         },
+        importFields: (state, action: PayloadAction<FormField[]>) => {
+            state.fields = action.payload;
+            state.selectedFieldId = null;
+        }
     }
 })
 
@@ -69,7 +73,8 @@ export const {
     reorderFields,
     clearForm,
     togglePreviewMode,
-    setPreviewMode
+    setPreviewMode,
+    importFields
 } = formBuilderSlice.actions
 
 
