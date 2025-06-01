@@ -1,16 +1,27 @@
 import { useDispatch, useSelector } from "react-redux";
-import { updateField } from "../../slices/formBuilderSlice";
+import { deleteField, selectField, updateField } from "../../slices/formBuilderSlice";
 import { RootState } from "../../store";
+import { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 //import { useEffect, useRef } from "react";
 
 
 export default function FieldSettingsPanel(){
     const dispatch = useDispatch();
+    const labelInputRef = useRef<HTMLInputElement>(null);
     //const PanelRef = useRef<HTMLDivElement>(null);
+
+   
 
     const selectedFieldId = useSelector((state: RootState)=>state.formBuilder.selectedFieldId)
     
     const field = useSelector((state: RootState) => state.formBuilder.fields.find((f)=> f.id === selectedFieldId))
+
+    useEffect(()=>{
+        if(labelInputRef.current){
+            labelInputRef.current.focus()
+        }
+    },[field?.id])
 
     // useEffect(()=>{
 
@@ -36,6 +47,17 @@ export default function FieldSettingsPanel(){
         
     }
 
+  
+
+    const handleDelete = () => {
+        dispatch(deleteField(field.id))
+        dispatch(selectField(null))
+        //toast.success("Field Deleted")
+        toast("Field deleted!", {
+            icon: <span style={{ fontSize: "22px", fontWeight: "bold" }}>🗑️</span>,
+        });
+    }
+
     return (
         <div className="p-4 border rounded shadow bg-white w-full sm:w-80">
             <h2 className="text-lg font-bold mb-4">Field Settings</h2>
@@ -43,7 +65,8 @@ export default function FieldSettingsPanel(){
             <label className="block mb-2">
                 <span className="text-sm font-medium">Label</span>
                 <input
-                    type="text"
+                    ref={labelInputRef}
+                    type="Text"
                     name="label"
                     value={field.label}
                     onChange={handleChange}
@@ -64,8 +87,17 @@ export default function FieldSettingsPanel(){
                     <option value="Number">Number</option>
                 </ select>
             </label>
-
-             <label className="block">
+            <label className="block mb-2">
+                <span className="text-sm font-medium">Placeholder</span>
+                <input
+                    type="Text"
+                    name="placeholder"
+                    value={field.placeholder || ""}
+                    onChange={handleChange}
+                    className="w-full border p-2 rounded"
+                />
+            </label>
+            <label className="block">
                 <input
                 type="checkbox"
                 name="required"
@@ -74,6 +106,10 @@ export default function FieldSettingsPanel(){
                 />
                 <span className="ml-2 text-sm">Required</span>
             </label>
+            
+            <button onClick={handleDelete} className="mt-4 text-sm text-red-600 hover:underline">
+                Delete Field
+            </button>
         </div>
     )
 }

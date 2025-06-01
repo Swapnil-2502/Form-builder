@@ -13,6 +13,7 @@ type Props = {
 export default function SortableField({field}: Props){
     const dispatch = useDispatch();
     const selectedFieldId = useSelector((state: RootState) => state.formBuilder.selectedFieldId);
+    const isPreviewMode = useSelector((state: RootState) => state.formBuilder.isPreviewMode);
 
     const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
         id: field.id,
@@ -26,6 +27,18 @@ export default function SortableField({field}: Props){
 
     const handleClick = () => {
         dispatch(selectField(field.id))
+    }
+
+    if (isPreviewMode) {
+        return (
+            <div className="p-4 border rounded mb-2 bg-gray-50">
+            <label className="block font-medium mb-1">{field.label || "Untitled Field"}</label>
+            {field.type === "Text" && <input type="Text" placeholder={field.placeholder || ""} className="w-full border px-2 py-1 rounded" />}
+            {field.type === "Email" && <input type="Email" placeholder={field.placeholder || ""} className="w-full border px-2 py-1 rounded" />}
+            {field.type === "Number" && <input type="Number" placeholder={field.placeholder || ""} className="w-full border px-2 py-1 rounded" />}
+            {field.type === "checkbox" && <input type="checkbox" />}
+            </div>
+        );
     }
 
     //const isSelected = selectedFieldId === field.id;

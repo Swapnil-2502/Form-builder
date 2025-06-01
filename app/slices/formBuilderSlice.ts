@@ -16,12 +16,14 @@ export interface FormField {
 
 interface FormBuilderState {
     fields: FormField[];
-    selectedFieldId: string | null
+    selectedFieldId: string | null;
+    isPreviewMode: boolean;
 }
 
 const initialState: FormBuilderState = {
     fields: [],
-    selectedFieldId: null
+    selectedFieldId: null,
+    isPreviewMode: false, 
 };
 
 const formBuilderSlice = createSlice({
@@ -49,7 +51,13 @@ const formBuilderSlice = createSlice({
         clearForm: (state) => {
             state.fields = [],
             state.selectedFieldId = null
-        }
+        },
+        togglePreviewMode(state) {
+            state.isPreviewMode = !state.isPreviewMode;
+        },
+        setPreviewMode(state, action: PayloadAction<boolean>) {
+            state.isPreviewMode = action.payload;
+        },
     }
 })
 
@@ -59,7 +67,9 @@ export const {
     deleteField,
     selectField,
     reorderFields,
-    clearForm
+    clearForm,
+    togglePreviewMode,
+    setPreviewMode
 } = formBuilderSlice.actions
 
 
