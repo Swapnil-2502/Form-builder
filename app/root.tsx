@@ -12,7 +12,7 @@ import { Toaster } from "react-hot-toast";
 import ThemeToggle from "./components/ThemeToggle";
 
 export function links() {
-  return [{ rel: "stylesheet", href: "/tailwind.css" }];
+  return [{ rel: "stylesheet", href: "../public/tailwind.css" }];
 }
 export default function root() {
   return (
