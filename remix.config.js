@@ -3,7 +3,7 @@ module.exports = {
   appDirectory: "app",
   assetsBuildDirectory: "public/build",
   publicPath: "/build/",
-  serverBuildPath: "api/index.js",
-  server: "@remix-run/vercel", // 👈 Important
-  serverBuildTarget: "vercel", // 👈 Important
+  server: "@remix-run/vercel",
+  serverBuildTarget: "vercel",
+  serverBuildPath: "api/index.js"
 };
