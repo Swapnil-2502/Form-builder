@@ -11,8 +11,6 @@ export default function FieldSettingsPanel(){
     const labelInputRef = useRef<HTMLInputElement>(null);
     //const PanelRef = useRef<HTMLDivElement>(null);
 
-   
-
     const selectedFieldId = useSelector((state: RootState)=>state.formBuilder.selectedFieldId)
     
     const field = useSelector((state: RootState) => state.formBuilder.fields.find((f)=> f.id === selectedFieldId))
@@ -22,19 +20,6 @@ export default function FieldSettingsPanel(){
             labelInputRef.current.focus()
         }
     },[field?.id])
-
-    // useEffect(()=>{
-
-    //     const handleClickOutside = (event: MouseEvent) => {
-    //         if (PanelRef.current && !  !PanelRef.current.contains(event.target as Node)){
-    //             dispatch(selectField(null))
-    //         }
-    //     }
-
-    //     document.addEventListener("mousedown", handleClickOutside);
-    //     return () => document.removeEventListener("mousedown", handleClickOutside);
-
-    // },[dispatch])
 
     if(!field) return null;
 

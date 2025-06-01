@@ -1,23 +1,31 @@
 import { FormField } from "../slices/formBuilderSlice";
 
-
-const STORAGE_KEY = "formBuilderFields";
-
-export const saveToLocalStorage = (fields: FormField[]) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(fields));
+export const saveToLocalStorage = (
+        fields: FormField[],
+        steps: unknown[],
+        currentStepIndex: number
+    ) => {
+        if (typeof window === "undefined") return;
+        const data = {
+            fields,
+            steps,
+            currentStepIndex,
+        };
+    localStorage.setItem("formBuilderFields", JSON.stringify(data));
 }
 
-export const loadFromLocalStorage = (): FormField[] => {
-    try{
-        const data = localStorage.getItem(STORAGE_KEY)
-        return data ? JSON.parse(data) : [];
-    }
-    catch(error){
-        console.log(error)
-        return [];
-    }
-}
+export const loadFromLocalStorage = () => {
+    if (typeof window === "undefined") return;
+  const saved = localStorage.getItem("formBuilderFields");
+  if (!saved) return null;
+
+  try {
+    return JSON.parse(saved);
+  } catch {
+    return null;
+  }
+};
 
 export const clearStorage = () => {
-    localStorage.removeItem(STORAGE_KEY)
+    localStorage.removeItem("formBuilderFields")
 }

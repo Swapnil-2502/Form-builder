@@ -15,17 +15,34 @@ export interface FormField {
     maxLength?: number;
 }
 
+interface Step{
+    id: string,
+    title: string,
+    fieldIds: string[]
+}
+
 interface FormBuilderState {
     fields: FormField[];
     selectedFieldId: string | null;
     isPreviewMode: boolean;
+    steps: Step[];
+    currentStepIndex: number;
 }
 
+const loaded = loadFromLocalStorage();
+
 const initialState: FormBuilderState = {
-    fields: loadFromLocalStorage(),
-    selectedFieldId: null,
-    isPreviewMode: false, 
+  fields: Array.isArray(loaded?.fields) ? loaded.fields : [],
+  selectedFieldId: null,
+  isPreviewMode: false,
+  steps: Array.isArray(loaded?.steps) ? loaded.steps : [{
+    id: "step-1",
+    title: "Step 1",
+    fieldIds: [],
+  }],
+  currentStepIndex: typeof loaded?.currentStepIndex === "number" ? loaded.currentStepIndex : 0,
 };
+
 
 const formBuilderSlice = createSlice({
     name: "formBuilder",
@@ -33,6 +50,8 @@ const formBuilderSlice = createSlice({
     reducers: {
         addField: (state, action: PayloadAction<FormField>) => {
             state.fields.push(action.payload)
+            const currentStep = state.steps[state.currentStepIndex]
+            currentStep.fieldIds.push(action.payload.id)
         },
         updateField: (state, action: PayloadAction<{id: string; updated: Partial<FormField>}>)=>{
             const field = state.fields.find( f => f.id === action.payload.id)
@@ -50,8 +69,16 @@ const formBuilderSlice = createSlice({
             state.fields = action.payload;
         },
         clearForm: (state) => {
-            state.fields = [],
-            state.selectedFieldId = null
+            state.fields = [];
+            state.selectedFieldId = null;
+            state.steps = [
+                {
+                id: "step-1",
+                title: "Step 1",
+                fieldIds: [],
+                }
+            ];
+            state.currentStepIndex = 0;
         },
         togglePreviewMode(state) {
             state.isPreviewMode = !state.isPreviewMode;
@@ -66,7 +93,46 @@ const formBuilderSlice = createSlice({
         setFields: (state, action: PayloadAction<FormField[]>) => {
             state.fields = action.payload;
             state.selectedFieldId = null;
-        }
+        },
+        setCurrentStepIndex: (state, action: PayloadAction<number>) => {
+            if (action.payload >= 0 && action.payload < state.steps.length) {
+                state.currentStepIndex = action.payload;
+            }
+        },
+        addStep: (state) => {
+            const newStepId = `step-${state.steps.length + 1}`;
+            const newStep = {
+                id: newStepId,
+                title: `Step ${state.steps.length + 1}`,
+                fieldIds: []
+            }
+            state.steps.push(newStep);
+        },
+        goToNextStep: (state) => {
+            if (state.currentStepIndex < state.steps.length - 1) {
+                state.currentStepIndex += 1;
+            }
+        },
+        goToPreviousStep: (state) => {
+            if (state.currentStepIndex > 0) {
+                state.currentStepIndex -= 1;
+            }
+        },
+        updateStepFieldIds: (state, action: PayloadAction<Step[]>) => {
+            state.steps = action.payload;
+        },
+        loadTemplate: (state, action: PayloadAction<FormField[]>) => {
+            state.fields = action.payload;
+            state.steps = [
+                {
+                id: "step-1",
+                title: "Step 1",
+                fieldIds: action.payload.map(field => field.id),
+                }
+            ];
+            state.currentStepIndex = 0;
+            state.selectedFieldId = null;
+        },
     }
 })
 
@@ -80,7 +146,13 @@ export const {
     togglePreviewMode,
     setPreviewMode,
     importFields,
-    setFields
+    setFields,
+    setCurrentStepIndex,
+    addStep,
+    goToNextStep,
+    goToPreviousStep,
+    updateStepFieldIds,
+    loadTemplate
 } = formBuilderSlice.actions
 
 

@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import FormBuilder from "../components/FormBuilder/FormBuilder";
-import { addField, clearForm, togglePreviewMode, importFields, setFields } from "../slices/formBuilderSlice";
+import { addField, clearForm, togglePreviewMode, importFields, loadTemplate } from "../slices/formBuilderSlice";
 import FieldSettingsPanel from "../components/Builder/FieldSettingsPanel";
 import { RootState } from "../store";
 import toast from "react-hot-toast";
 import { contactUsTemplate } from "../template/contactUsTemplate"
-import { useEffect } from "react";
-import { saveToLocalStorage } from "../utils/localStorage";
+// import { useEffect } from "react";
+// import { saveToLocalStorage } from "../utils/localStorage";
+import StepNavigation from "../components/Builder/StepNavigation";
 
 export default function BuilderRoute() {
 
@@ -22,6 +23,8 @@ export default function BuilderRoute() {
                     required: false,
             })
         );
+        // const currentStepId = steps[currentStepIndex].id;
+        // dispatch(linkFieldToStep({ fieldId: newId, stepId: currentStepId }));
         toast("Field Added!",{
             icon: <span style={{ fontSize: "22px", fontWeight: "bold" }}>✅</span>,
         })
@@ -60,9 +63,9 @@ export default function BuilderRoute() {
         }
     }
 
-    useEffect(()=>{
-        saveToLocalStorage(fields)
-    },[fields])
+    // useEffect(()=>{
+    //     saveToLocalStorage(fields)
+    // },[fields])
 
     return (
         <div className="min-h-screen bg-gray-50 p-6">
@@ -102,7 +105,7 @@ export default function BuilderRoute() {
                 <button
                     className="ml-4 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700"
                     onClick={() => {
-                        dispatch(setFields(contactUsTemplate))
+                        dispatch(loadTemplate(contactUsTemplate))
                         toast("ContactUs Template Loaded", {
                             icon: <span style={{ fontSize: "22px", fontWeight: "bold" }}>📄</span>,
                         })}
@@ -110,9 +113,19 @@ export default function BuilderRoute() {
                     >
                     ContactUs Template
                 </button>
+                
             </div>
+            <button
+                    onClick={() => dispatch(togglePreviewMode())}
+                    className="mt-4 mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+                    {isPreviewMode ? "🔧 Exit Preview" : "👀 Preview Form"}
+            </button>
 
             <div className="flex flex-col md:flex-row gap-4 mt-2">
+                <div className="w-full md:w-2/3">
+                    <StepNavigation />
+                </div>
                 <div className="w-full md:w-2/3">
                     <FormBuilder />
                 </div>
@@ -121,12 +134,7 @@ export default function BuilderRoute() {
                 </div>
                 
             </div>
-            <button
-                onClick={() => dispatch(togglePreviewMode())}
-                className="mb-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                >
-                {isPreviewMode ? "🔧 Exit Preview" : "👀 Preview Form"}
-            </button>
+            
         </div>
     )
 }
