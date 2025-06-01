@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "@reduxjs/toolkit";
 import FormBuilder from "../components/FormBuilder/FormBuilder";
-import { addField, clearForm, togglePreviewMode, importFields } from "../slices/formBuilderSlice";
+import { addField, clearForm, togglePreviewMode, importFields, setFields } from "../slices/formBuilderSlice";
 import FieldSettingsPanel from "../components/Builder/FieldSettingsPanel";
 import { RootState } from "../store";
 import toast from "react-hot-toast";
+import { contactUsTemplate } from "../template/contactUsTemplate"
 
 export default function BuilderRoute() {
 
@@ -49,11 +50,11 @@ export default function BuilderRoute() {
             if (!Array.isArray(parsed)) throw new Error("Invalid format");
             
             dispatch(importFields(parsed));
-            toast("Form imported successfully!", { icon: "✅" });
+            toast("Form imported successfully!", { icon: <span style={{ fontSize: "22px", fontWeight: "bold" }}>✅</span> });
         }
         catch(error){
             console.log(error)
-            toast("Invalid JSON. Please try again.", { icon: "❌" });
+            toast("Invalid JSON. Please try again.", { icon: <span style={{ fontSize: "22px", fontWeight: "bold" }}>❌</span> });
         }
     }
 
@@ -91,6 +92,18 @@ export default function BuilderRoute() {
                     onClick={handleImportClick}
                     >
                     Import JSON
+                </button>
+                <button
+                    className="ml-4 bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700"
+                    onClick={() => {
+                        dispatch(setFields(contactUsTemplate))
+                        toast("ContactUs Template Loaded", {
+                            icon: <span style={{ fontSize: "22px", fontWeight: "bold" }}>📄</span>,
+                        });
+                    }
+                        }
+                    >
+                    ContactUs Template
                 </button>
             </div>
 
