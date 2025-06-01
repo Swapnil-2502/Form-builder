@@ -6,6 +6,8 @@ import FieldSettingsPanel from "../components/Builder/FieldSettingsPanel";
 import { RootState } from "../store";
 import toast from "react-hot-toast";
 import { contactUsTemplate } from "../template/contactUsTemplate"
+import { useEffect } from "react";
+import { saveToLocalStorage } from "../utils/localStorage";
 
 export default function BuilderRoute() {
 
@@ -58,6 +60,10 @@ export default function BuilderRoute() {
         }
     }
 
+    useEffect(()=>{
+        saveToLocalStorage(fields)
+    },[fields])
+
     return (
         <div className="min-h-screen bg-gray-50 p-6">
             <h1 className="text-2xl font-bold mb-4">Form Builder</h1>
@@ -99,8 +105,7 @@ export default function BuilderRoute() {
                         dispatch(setFields(contactUsTemplate))
                         toast("ContactUs Template Loaded", {
                             icon: <span style={{ fontSize: "22px", fontWeight: "bold" }}>📄</span>,
-                        });
-                    }
+                        })}
                         }
                     >
                     ContactUs Template

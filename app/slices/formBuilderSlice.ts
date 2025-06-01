@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { loadFromLocalStorage } from "../utils/localStorage"
 
 
 export interface FormField {
@@ -21,7 +22,7 @@ interface FormBuilderState {
 }
 
 const initialState: FormBuilderState = {
-    fields: [],
+    fields: loadFromLocalStorage(),
     selectedFieldId: null,
     isPreviewMode: false, 
 };
