@@ -68,8 +68,8 @@ export default function BuilderRoute() {
     // },[fields])
 
     return (
-        <div className="min-h-screen bg-gray-50 p-6">
-            <h1 className="text-2xl font-bold mb-4">Form Builder</h1>
+        <div className="bg-white text-black dark:bg-gray-900  p-4">
+            <h1 className="text-2xl font-bold mb-4 dark:text-white">Form Builder</h1>
 
             <div className="flex flex-wrap gap-2">
                  <button

@@ -21,6 +21,7 @@ export default function FieldSettingsPanel(){
         }
     },[field?.id])
 
+
     if(!field) return null;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
