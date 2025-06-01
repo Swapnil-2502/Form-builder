@@ -4,8 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build:css": "tailwindcss -i ./app/styles/tailwind.css -o ./public/tailwind.css --minify",
-    "build": "npm run build:css && remix build",
+    "build": "remix vite:build",
     "dev": "remix vite:dev",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "start": "remix-serve ./build/server/index.js",
