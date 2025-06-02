@@ -89,6 +89,13 @@ const formBuilderSlice = createSlice({
         importFields: (state, action: PayloadAction<FormField[]>) => {
             state.fields = action.payload;
             state.selectedFieldId = null;
+
+            if (state.steps.length > 0) {
+                const importedFieldIds = action.payload.map(f => f.id);
+                state.steps[0].fieldIds = importedFieldIds;
+            }
+
+            state.currentStepIndex = 0;
         },
         setFields: (state, action: PayloadAction<FormField[]>) => {
             state.fields = action.payload;

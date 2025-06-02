@@ -33,6 +33,7 @@ export default function BuilderRoute() {
     const isPreviewMode = useSelector((state: RootState) => state.formBuilder.isPreviewMode);
 
     const fields = useSelector((state: RootState) => state.formBuilder.fields);
+    
     const handleExport = () => {
         const datastr = JSON.stringify(fields,null,2)
         const blob = new Blob([datastr],{type:"application/json"})
