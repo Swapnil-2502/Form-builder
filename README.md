@@ -1,3 +1,40 @@
+# 🧩 Form Builder Application
+
+A dynamic, multi-step drag-and-drop Form Builder built using **React Remix**, **Redux Toolkit**, and **Tailwind CSS**. This application allows users to visually create, customize, and preview complex forms with features like step navigation, live preview, theming, and persistent storage.
+
+---
+
+## 🚀 Features
+
+- ⚡ **Drag-and-Drop Interface** – Add and reorder fields easily  
+- 🧱 **Supported Fields** – Text, Email, Number, etc.  
+- ➕ **Field Settings Panel** – Edit label, placeholder, validation rules  
+- 📦 **Multi-Step Form Support** – Navigate across steps with validation  
+- 🌗 **Dark/Light Mode Toggle** – Seamless theming support  
+- 💾 **Auto Save to localStorage** – Resume your form anytime  
+- 📤 **Export/Import JSON** – Share or reuse form templates  
+- 🧪 **Live Preview Mode** – Test your form instantly  
+- 🧰 **Predefined Templates** – Quickly load common forms (e.g., Contact Us)
+
+---
+
+# Project Link
+```bash
+https://form-builder-ten-plum.vercel.app/builder
+```
+
+## 🛠️ Tech Stack
+
+| Tech         | Description                      |
+|--------------|----------------------------------|
+| React Remix  | Full-stack React framework       |
+| Redux Toolkit| State management                 |
+| Tailwind CSS | Utility-first styling framework  |
+| React DnD Kit| Drag and Drop support            |
+| React Hot Toast | Toast Notifications           |
+
+---
+
 # Welcome to Remix!
 
 - 📖 [Remix docs](https://remix.run/docs)
